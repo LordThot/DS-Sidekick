@@ -6,27 +6,23 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ds-sidekick-import
+  cancel-in-progress: false
+
 jobs:
-  extract:
+  import:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout latest repository
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: main
           fetch-depth: 1
           clean: true
 
-      - name: Verify clean checkout
-        run: |
-          git status --short
-          if ! git diff --quiet || ! git diff --cached --quiet; then
-            echo "ERROR: Checkout is not clean."
-            exit 1
-          fi
-
-      - name: Download ZIP
+      - name: Download DS Sidekick ZIP
         run: |
           curl -fL \
             "https://raw.githubusercontent.com/LordThot/Info/main/ds_sidekick-1.1.1.zip" \
@@ -38,11 +34,11 @@ jobs:
           unzip -oq /tmp/ds.zip -d /tmp/ds
 
           if ! find /tmp/ds -type f -print -quit | grep -q .; then
-            echo "ERROR: ZIP contains no files."
+            echo "ERROR: No files found in ZIP."
             exit 1
           fi
 
-      - name: Copy ZIP contents
+      - name: Copy package files
         run: |
           python3 - <<'PY'
           import os
@@ -77,7 +73,74 @@ jobs:
           print("Total files imported:", count)
 
           if count == 0:
-              raise RuntimeError("No files imported.")
+              raise RuntimeError("No files were imported.")
+          PY
+
+      - name: Remove hard-coded Slack webhooks
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+
+          # Match Slack Incoming Webhook URLs without printing them.
+          pattern = re.compile(
+              rb'https://hooks\.slack(?:-gov)?\.com/services/'
+              rb'[A-Za-z0-9/_-]+'
+          )
+
+          text_extensions = {
+              ".js", ".mjs", ".cjs", ".json", ".html",
+              ".htm", ".css", ".txt", ".md", ".xml",
+              ".yml", ".yaml", ".svg", ".properties"
+          }
+
+          changed = 0
+          remaining = []
+
+          for root, dirs, files in os.walk("."):
+              dirs[:] = [
+                  d for d in dirs
+                  if d not in {".git", ".github"}
+              ]
+
+              for filename in files:
+                  path = os.path.join(root, filename)
+
+                  if os.path.splitext(filename)[1].lower() \
+                          not in text_extensions:
+                      continue
+
+                  with open(path, "rb") as f:
+                      content = f.read()
+
+                  cleaned, replacements = pattern.subn(
+                      b"", content
+                  )
+
+                  if replacements:
+                      with open(path, "wb") as f:
+                          f.write(cleaned)
+
+                      changed += replacements
+                      print(
+                          "Removed Slack webhook URL(s) from:",
+                          path
+                      )
+
+                  if pattern.search(cleaned):
+                      remaining.append(path)
+
+          print("Webhook URLs removed:", changed)
+
+          if remaining:
+              print(
+                  "ERROR: Webhook URLs remain in:",
+                  ", ".join(remaining)
+              )
+              sys.exit(1)
+
+          print("Slack webhook scan passed.")
           PY
 
       - name: Configure Git
@@ -86,20 +149,32 @@ jobs:
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Stage and inspect changes
+      - name: Stage imported files
         run: |
           git add -A
           git status --short
           git diff --cached --stat
 
-      - name: Commit changes
+      - name: Check staged files for Slack webhooks
         run: |
-          if git diff --cached --quiet; then
-            echo "No changes to commit; ZIP contents may already exist."
-          else
-            git commit -m "Import DS Sidekick package"
+          if git diff --cached --binary |
+             grep -Eiq \
+             'hooks\.slack(-gov)?\.com/services/'; then
+            echo "ERROR: Slack webhook pattern found in staged changes."
+            echo "Push cancelled for safety."
+            exit 1
           fi
 
-      - name: Push changes
+          echo "Staged-change webhook check passed."
+
+      - name: Commit imported files
         run: |
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Import DS Sidekick package (sanitised)"
+          fi
+
+      - name: Push to main
+        run: |
+          git push origin HEAD:main
