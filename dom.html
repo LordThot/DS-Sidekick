@@ -1,0 +1,485 @@
+<span id="titleDisplay" style="display: block;">
+  <a id="openBtn" href="#" class="ui-dialog-titlebar-close">
+    <span class="ui-dialog-title" style="float: left; color: #B60E0E;
+      font-size: 12px; padding-left: 5px;">DS Sidekick</span>
+    <span class="ui-icon ui-icon-newwin">Close</span>
+  </a>
+</span>
+<div id="mainDisplay" style="display: none; width: 100%; height: 100%; overflow:scroll;">
+  <div id="ctDataField" style="display: none;"></div>
+  <div id="leftResizeBar" class="ui-resizable-w ui-resizable-handle"
+    style="cursor: default;" side="left"></div>
+  <div id="rightResizeBar" class="ui-resizable-e ui-resizable-handle"
+    style="cursor: default;" side="right"></div>
+  <div id="topResizeBar" class="ui-resizable-n ui-resizable-handle"
+    style="cursor: n-resize;" side="top"></div>
+  <div id="bottomResizeBar" class="ui-resizable-s ui-resizable-handle"
+    style="cursor: default;" side="bottom"></div>
+  <div class="sideTabs" id="ctTabs" style="width: 550px;">
+    <a id="resizeBtn" href="#">
+      <span class="ui-icon ui-icon-newwin"
+            style="margin-left: 5px; width: 16px;">Close</span>
+    </a>
+    <div id="summaryTab" class="sideTab selected" style="left: 21px; width: 80px;">Summary</div>
+    <div id="productionTab" class="sideTab" style="left: 101px; width: 90px;">Production</div>
+    <div id="toolsTab" class="sideTab" style="left: 191px; width: 50px;">Tools</div>
+    <div id="mappingTab" class="sideTab" style="left: 241px; width: 80px;">Mapping</div>
+    <div id="tradeTab" class="sideTab" style="left: 321px; width: 50px;">Trade</div>
+    <div id="armyTab" class="sideTab" style="left: 371px; width: 50px;">Army</div>
+    <div class="dragBar" target="dsSidekick"
+      style="left: 471px; width: 65px; position: absolute;
+            top: 0px; height: 19px;"></div>
+    <a id="upgradeBtn"
+      href="#"
+      style="display: none;"
+      target="_blank" class="ui-dialog-titlebar-close">
+      <span class="ui-icon ui-icon-circle-arrow-n" style="width:16px;
+        position:absolute; top:0px; right:21px;">Close</span>
+    </a>
+    <a class="closeBtn" href="#" class="ui-dialog-titlebar-close">
+      <span class="ui-icon ui-icon-close" style="width:16px;
+        position:absolute; top:0px; right:6px;">Close</span>
+    </a>
+  </div>
+  <div id="summaryDiv" style="top: 20px; overflow: visible; width: 550px">
+    <table class="oddeven" id="summaryTable" style="margin-top: 10px;">
+      <thead><tr><th></th><th>City</th><th>Actions</th><th>Sov Goal</th><th>Research</th><th>Training</th><th>Harvesters</th><th>Dist</th></tr></thead>
+      <tfoot><tr><th></th><th></th><th></th><th></th><th></th><th>Total Pop:</th><th></th><th></th></tr></tfoot>
+    </table>
+    <div id="dailyBonusDiv" style="position: absolute; top: 20px; left: 2px;">
+      Load Herald
+    </div>
+    <textarea rows="15" cols="50" id="notesArea"></textarea>
+    <br/>
+    <input id="showChatLog" type="submit" value="Chat Log" class="short"></input>
+    <input id="showIKnow" type="submit" value="I Know" class="short"></input>
+    <input id="sidekickHelp" type="submit" value="Help" class="short"></input>
+  </div>
+  <div id="productionDiv" style="top: 20px; display: none; overflow: visible;">
+    <table id="productionTable" class="oddeven" style="table-layout: fixed;"></table>
+    <table id="hubLinkTable" style="table-layout: fixed;">
+    </table>
+  </div>
+  <div id="toolsDiv" style="width: 450px; top:20px; overflow: visible; display: none;">
+    <fieldset style="width: 400px;"><legend>Resources Needed to Build</legend>
+      <p>Bring up upgrade window and click capture</p>
+      <input id="CaptureResourcesBtn" type="submit" value="Capture" class="short">
+      </input>
+      <table id="ShortageTable" class="oddeven" style="display: none">
+        <thead>
+          <tr><th></th><th>Wood</th><th>Clay</th><th>Iron</th><th>Stone</th>
+              <th></br></th><th>Food</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Production Upgrade</legend>
+      <p>Select city and click compute</p>
+      <input id="ComputeUpgradeBtn" type="submit" value="Compute" class="short">
+      </input>
+      <table id="UpgradeTable" style="display: none;">
+        <thead><tr><th></th><th>&Delta; Production</th><th>&Delta;/KResource</th><th>&Delta;/Hour</th><th>&Delta;/Pop</th></tr></thead>
+        <tbody>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr style='background-color:rgba(231,217,168,0.5);'><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr style='background-color:rgba(231,217,168,0.5);'><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr style='background-color:rgba(231,217,168,0.5);'><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr style='background-color:rgba(231,217,168,0.5);'><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Distances</legend>
+      <p>Enter the location and hit compute</p>
+      <input type="text" style="width: 40px;" id="DistCenterX"></input>
+      <input type="text" style="width: 40px;" id="DistCenterY"></input>
+      <input id="ComputeDistBtn" type="submit" value="Compute" class="short"></input>
+      <table id="DistanceTable" class="oddeven" style="display: none">
+        <thead>
+          <tr><th>City</th><th>Distance</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Options</legend>
+      <p>Select which lines to display on the production tab</p>
+      <table id="ProductionQueue" class="oddeven"></table>
+      <table id="ProductionBasic" class="oddeven"></table>
+      <table id="ProductionAdv" class="oddeven"></table>
+      Basic Resource production rate display:</br>
+      <input id="t1RateRaw" type="radio" name="basicRate" value="raw" checked="checked">Raw
+      <input id="t1RateIncludeT2" type="radio" name="basicRate" value="t2">
+        Include T2 production cost
+      </br>
+      Capture Alliance Chat
+      <input id="captureChat" type="checkbox">
+    </fieldset>
+    <input id="DebugAJAXBtn" type="submit" value="Debug AJAX" class="short">
+    </input>
+    <input id="ClearCookiesBtn" type="submit" value="Clear Cookies" class="short">
+    </input>
+  </div>
+  <div id="MappingDiv" style="top: 20px; width: 450px; display: none;">
+    <div id="MapDataTransfer" style="display: none;"></div>
+    <fieldset style="width: 400px;"><legend>Location Saver</legend>
+      <a href="#" id="LocationSaverCurrent">Copy Current Position</a>
+      <br />
+      X:<input type="text" style="width: 40px;" id="LocationSaverX"></input>
+      Y:<input type="text" style="width: 40px;" id="LocationSaverY"></input>
+      Note:<input type="text" style="width: 160px;" id="LocationSaverNote"></input>
+      <input type="submit" class="short" value="Add" id="LocationSaverAdd"></input>
+      <table class="evenodd">
+        <tbody id="SavedLocations"></tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Soveriegnty Calculator</legend>
+      <p>Display soveriegnty bonuses on the map and calculate the bonus/cost for a city. To calculate for a city, enter the coordinates and click the Compute button.</p>
+      <select id="SovTypeSelect"></select>
+      <input id="MapSovBtn" type="submit" value="Map Sov" class="short"></input>
+      <br />
+      <input type="text" style="width: 40px;" id="SovCenterX"></input>
+      <input type="text" style="width: 40px;" id="SovCenterY"></input>
+      <a href="#" id="SovSelectCurCity">Use Current City</a>
+      <input id="CaptureSovBtn" type="submit" value="Compute" class="short"></input>
+      <br />
+      <p id="ComputeSovTxt" style="display: none;">You may have to manually
+      move/update the map (can click center on town)</p>
+      <table id="SovTable"></table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Inactive City Finder</legend>
+      <p>Find all the cities withing the given distance of the location that
+      are inactive. An inactive city is one where the population hasn't
+      changed for 2 weeks and the total population is les than 20k</p>
+      Distance to search: <select id="InactiveDistanceSelect">
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+        <option>500</option>
+      </select>
+      <br />
+      Location to search from: <input type="text" style="width: 40px;" id="InactiveCenterX"></input>
+      <input type="text" style="width: 40px;" id="InactiveCenterY"></input>
+      <a href="#" id="InactiveSelectCurCity">Use Current City</a>
+      <input id="FindInactiveBtn" type="submit" value="Find" class="short"></input>
+      <table class="evenodd" id="inactiveCities" style="display: none;">
+        <thead><tr><th>Player</th><th>City</th><th>Distance</th><th>Population</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>Harvest Finder</legend>
+      <p>Turn on and move map around to capture harvest nodes</p>
+      <label><input type="checkbox" id="ShowResourcesCheck" checked="true"/>Show basic resources</label>
+      <label><input type="checkbox" id="ShowMaterialsCheck" checked="false"/>Show materials</label>
+      <br />
+      <label><input type="checkbox" id="ShowNPCCheck" checked="false"/>Show NPCs</label>
+      <label><input type="checkbox" id="HideSovCheck" checked="true"/>Hide if Sovereignty</label>
+      <br />
+      <label><input type="checkbox" id="NearestTownCheck" checked="true"/>Send from nearest town</label>
+      <br />
+      <input id="ToggleHarvestCaptureBtn" type="submit" value="Engage" class="short"></input>
+      <table id="HarvestNodeTable" style="display: none;">
+        <thead><tr><th>Type</th><th>Location</th></thead>
+      <tbody>
+      <tr><td><span class="name resIcon ico-wood"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon ico-clay"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon ico-iron"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon ico-stone"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon ico-food"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon ico-gold"></span></td><td></td></tr>
+      <tr><td>NPC</td><td></td></tr>
+      <tr><td><span class="name base pelts_24"></span></td><td></td></tr>
+      <tr><td><span class="name itemsprite herbs_24"></span></td><td></td></tr>
+      <tr><td><span class="name base crystals_24"></span></td><td></td></tr>
+      <tr><td><span class="name itemsprite
+            subburnished24"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon elemairsalt_24"></span></td><td></td></tr>
+      <tr><td><span class="name resIcon spices_24"></span></td><td></td></tr>
+      <tr><td><span class="name base gems_24"></span></td><td></td></tr>
+      <tr><td><span class="name base grapes_24"></span></td><td></td></tr>
+      <tr><td><span class="name base paws_24"></span></td><td></td></tr>
+      </tbody>
+      </table>
+    </fieldset>
+    <fieldset style="width: 400px;"><legend>NPC Battle Calculator</legend>
+      <p>Pick the type of unit you will attack with and the city that you want
+      to attack from. Click the button. If the table doesn't update, you may
+      have to manually pan the map.</p>
+      <select id="RaceSelect">
+        <option value="Humans" selected="selected">Humans</option>
+        <option value="Elves">Elves</option>
+        <option value="Dwarves">Dwarves</option>
+        <option value="Orcs">Orcs</option>
+      </select>
+      <select id="UnitTypeSelect"> </select>
+      <input id="NPCBattleBtn" type="submit" value="Compute" class="short"></input>
+      <br />
+      <table id="NPCBattleTable" style="display: none">
+        <thead>
+          <tr><th>Location</th><th>Type</th><th>Terrain</th><th>Size</th><th>Killed</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+  </div>
+  <div id="TradeDiv" style="top: 20px; display: none; overflow: visible;">
+    <table id="tradeTable" class="oddeven" style="table-layout: fixed;"></table>
+  </div>
+  <div id="ArmyDiv" style="top: 20px; display: none; overflow: visible;">
+    <p>Troop counts: (load each city's army page to refresh)
+    <table id="troopTable" rules="all">
+      <thead><tr><th colspan="2">City</th><th>Cavalry</th><th>Infantry</th><th>Bow</th><th>Spear</th><th>Siege</th><th>Scout</th><th>Thief</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p>Troop movements: (load each city's army movement page to refresh)
+    <table id="troopMovementTable" rules="all">
+      <thead><tr><th>Icon</th><th>Count</th><th>Action</th>
+          <th>Sending City</th><th>Target</th><th>Time</th>
+          <th>Distance</th><th>Speed</th></th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+<div id="ctChatLog" class="ui-dialog ui-widget ui-widget-content"
+  style="display: none;
+  position: fixed; height: auto; width: 500px; top: 300px; left:1100px;
+  z-index: 1001;">
+  <div id="ChatDataTransfer" style="display:none;"></div>
+  <div class="sideTabs">
+    <div id="AllianceChatTab" style="left: 5px; width: 130px;" class="sideTab selected">Alliance Chat Log</div>
+    <div id="GlobalChatTab" style="left: 135px; width: 130px" class="sideTab">Global Chat Log</div>
+    <div class="dragBar" target="ctChatLog"
+      style="left: 260px; width: 240px; position: absolute;
+            top: 0px; height: 19px;"></div>
+    <a href="#" class="closeBtn ui-dialog-titlebar-close">
+      <span class="ui-icon ui-icon-close" style="width:16px;
+        position:absolute; top:0px; right:6px;">Close</span>
+    </a>
+  </div>
+  <table id="allianceChatLog" class="oddeven ui-dialog-content ui-widget-content"
+    style="overflow-x: hidden; overflow-y: scroll; white-space: normal;
+    word-wrap: break-word; height: 422px; width: auto">
+  </table>
+  <table id="globalChatLog" class="oddeven ui-dialog-content ui-widget-content"
+    style="display: none; overflow-x: hidden; overflow-y: scroll; 
+    white-space: normal; word-wrap: break-word; height: 422px; width: auto">
+  </table>
+</div>
+<div id="ctIKnow" class="ui-dialog ui-widget ui-widget-content"
+  style="display: none; background-color: white; overflow: scroll;
+  position: fixed; height: 400px; width: 400px; top: 40px; left:1100px;
+  z-index: 1001;">
+  <div class="sideTabs">
+    <div class="dragBar sideTab" target="ctIKnow"
+      style="left: 0px; width: 365px; position: absolute;
+      top: 0px; height: 25px;">I Know
+    </div>
+    <a href="#" class="closeBtn ui-dialog-titlebar-close">
+      <span class="ui-icon ui-icon-close" style="width:16px;
+        position:absolute; top:0px; right:6px;">Close</span>
+    </a>
+  </div>
+
+  <h2>General Knowledge</h2>
+  <h3>Stack Size</h3>
+  <ul>
+    <li>"Few": Less than 4 units </li>
+    <li>"Handful": 5 to 8 </li>
+    <li>"Several": 9 to 21 </li>
+    <li>"Pack": 22 to 81 </li>
+    <li>"Many": 82 to 128 </li>
+    <li>"Gathering": 129 to 227 </li>
+    <li>"Horde": 228 to 462 </li>
+    <li>"Throng": 463 to 815 </li>
+    <li>"Host": 816 to 2,500 </li>
+    <li>"Legion": 2,501 to 9,999 </li>
+    <li>"Myriad": 10,000 to 25,000 </li>
+    <li>"Sea": 25,001 to 49,999 </li>
+    <li>"Cornucopia": 50,000 or more </li>
+  </ul>
+
+  <h3>Map speed</h3>
+  <ul>
+    <li>1 arrow: 1-7 squares per hour </li>
+    <li>2 arrows: 8-16 squares per hour </li>
+    <li>3 arrows: 17-25 squares per hour </li>
+    <li>4 arrows: 26-41 squares per hour </li>
+    <li>5 arrows: 41+ squares per hour </li>
+  </ul>
+
+  <h3>Terrain Bonuses</h3>
+  <table class="table-condensed unitTable">
+    <tbody>
+    <tr>
+      <th rowspan="2">Terrain</th>
+      <th colspan="4">Attack %</th>
+      <th colspan="4">Defense %</th>
+    </tr>
+    <tr>
+      <th>Spear</th> <th>Range</th> <th>Inf</th> <th>Cav</th> <th>Spear</th>
+      <th>Range</th> <th>Inf</th> <th>Cav</th>
+    </tr>
+    <tr><td>Plains</td><td>-15</td><td>0</td><td>0</td><td>30</td><td>-15</td><td>0</td><td>0</td><td>25</td></tr>
+    <tr><td>Small Forest</td><td>10</td><td>-10</td><td>30</td><td>-10</td><td>10</td><td>-15</td><td>30</td><td>-10</td></tr>
+    <tr><td>Large Forest</td><td>5</td><td>-15</td><td>25</td><td>-15</td><td>5</td><td>-20</td><td>25</td><td>-15</td></tr>
+    <tr><td>Buildings</td><td>15</td><td>20</td><td>25</td><td>-30</td><td>25</td><td>15</td><td>20</td><td>-30</td></tr>
+    <tr><td>Small Hill</td><td>0</td><td>0</td><td>0</td><td>0</td><td>5</td><td>5</td><td>5</td><td>0</td></tr>
+    <tr><td>Large Hill</td><td>5</td><td>20</td><td>0</td><td>-15</td><td>10</td><td>10</td><td>0</td><td>-15</td></tr>
+    <tr><td>Small Mountain</td><td>5</td><td>0</td><td>-10</td><td>-20</td><td>15</td><td>15</td><td>0</td><td>-15</td></tr>
+    <tr><td>Large Mountain </td><td>10</td><td>25</td><td>-20</td><td>-30</td><td>20</td><td>30</td><td>0</td><td>-30</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Requirements to settle</h3>
+  <table class="table-condensed">
+    <tbody>
+      <tr> <th>#</th> <th>Settlers</th> <th>Population</th> </tr>
+      <tr> <td>2nd</td> <td>1</td> <td>450</td> </tr>
+      <tr> <td>3rd</td> <td>2</td> <td>2,000</td> </tr>
+      <tr> <td>4th</td> <td>3</td> <td>5,000</td> </tr>
+      <tr> <td>5th</td> <td>4</td> <td>10,000</td> </tr>
+      <tr> <td>6th</td> <td>5</td> <td>20,000</td> </tr>
+      <tr> <td>7th</td> <td>6</td> <td>40,000</td> </tr>
+      <tr> <td>8th</td> <td>7</td> <td>75,000</td> </tr>
+      <tr> <td>9th</td> <td>8</td> <td>130,000</td> </tr>
+      <tr> <td>10th</td> <td>9</td> <td>233,550</td> </tr>
+    </tbody>
+  </table>
+
+  <h2>Unit statistics</h2>
+  <h3>Human Military Units</h3>
+    <table class="unitTable table-condensed">
+    <tbody>
+      <tr><th rowspan="2">Unit Name</th><th rowspan="2">Type</th><th rowspan="2">Attack</th><th colspan="4">Defense against</th><th rowspan="2">Speed</th><th rowspan="2">Carry</th><th rowspan="2">Feed</th></tr>
+      <tr><th>Spr</th><th>Rng</th><th>Inf</th><th>Cav</th></tr>
+      <tr><td>Militiaman</td><td>0</td><td>7</td><td>11</td><td>4</td><td>11</td><td>13</td><td>8</td><td>20</td><td>1</td></tr>
+      <tr><td>Pikeman</td><td>0</td><td>16</td><td>17</td><td>11</td><td>17</td><td>29</td><td>6</td><td>12</td><td>2</td></tr>
+      <tr><td>Archer</td><td>1</td><td>16</td><td>21</td><td>22</td><td>20</td><td>13</td><td>7</td><td>20</td><td>2</td></tr>
+      <tr><td>Longbowman</td><td>1</td><td>24</td><td>33</td><td>32</td><td>32</td><td>20</td><td>9</td><td>27</td><td>3</td></tr>
+      <tr><td>Swordsman</td><td>2</td><td>22</td><td>13</td><td>10</td><td>15</td><td>14</td><td>7</td><td>48</td><td>2</td></tr>
+      <tr><td>Man-at-Arms</td><td>2</td><td>35</td><td>20</td><td>18</td><td>21</td><td>19</td><td>5</td><td>55</td><td>3</td></tr>
+      <tr><td>Charioteer</td><td>3</td><td>37</td><td>15</td><td>16</td><td>20</td><td>21</td><td>18</td><td>150</td><td>3</td></tr>
+      <tr><td>Knight</td><td>3</td><td>65</td><td>20</td><td>19</td><td>28</td><td>28</td><td>12</td><td>100</td><td>4</td></tr>
+    </tbody>
+  </table>
+  <h3>Elf Military Units</h3>
+    <table class="unitTable table-condensed">
+    <tbody>
+      <tr><th rowspan="2">Unit Name</th><th rowspan="2">Type</th><th rowspan="2">Attack</th><th colspan="4">Defense against</th><th rowspan="2">Speed</th><th rowspan="2">Carry</th><th rowspan="2">Feed</th></tr>
+      <tr><th>Spr</th><th>Rng</th><th>Inf</th><th>Cav</th></tr>
+      <tr><td>Protector</td><td>0</td><td>6</td><td>11</td><td>4</td><td>10</td><td>13</td><td>9</td><td>18</td><td>1</td></tr>
+      <tr><td>Phalanx</td><td>0</td><td>15</td><td>15</td><td>10</td><td>15</td><td>30</td><td>7</td><td>10</td><td>2</td></tr>
+      <tr><td>Sentinel</td><td>1</td><td>20</td><td>23</td><td>24</td><td>23</td><td>16</td><td>10</td><td>25</td><td>2</td></tr>
+      <tr><td>Elven Trueshot</td><td>1</td><td>32</td><td>36</td><td>36</td><td>34</td><td>25</td><td>8</td><td>30</td><td>3</td></tr>
+      <tr><td>Warden</td><td>2</td><td>21</td><td>14</td><td>12</td><td>14</td><td>14</td><td>6</td><td>55</td><td>2</td></tr>
+      <tr><td>Wardancer</td><td>2</td><td>33</td><td>19</td><td>19</td><td>20</td><td>20</td><td>8</td><td>65</td><td>3</td></tr>
+      <tr><td>Swiftsteed</td><td>3</td><td>36</td><td>13</td><td>13</td><td>20</td><td>21</td><td>20</td><td>130</td><td>3</td></tr>
+      <tr><td>Marshal</td><td>3</td><td>59</td><td>19</td><td>18</td><td>27</td><td>28</td><td>17</td><td>92</td><td>4</td></tr>
+    </tbody>
+  </table>
+  <h3>Dwarf Military Units</h3>
+    <table class="unitTable table-condensed">
+    <tbody>
+      <tr><th rowspan="2">Unit Name</th><th rowspan="2">Type</th><th rowspan="2">Attack</th><th colspan="4">Defense against</th><th rowspan="2">Speed</th><th rowspan="2">Carry</th><th rowspan="2">Feed</th></tr>
+      <tr><th>Spr</th><th>Rng</th><th>Inf</th><th>Cav</th></tr>
+      <tr><td>Yeoman</td><td>0</td><td>7</td><td>12</td><td>4</td><td>13</td><td>13</td><td>8</td><td>22</td><td>1</td></tr>
+      <tr><td>Halbardier</td><td>0</td><td>16</td><td>17</td><td>13</td><td>17</td><td>29</td><td>6</td><td>16</td><td>2</td></tr>
+      <tr><td>Slinger</td><td>1</td><td>15</td><td>21</td><td>22</td><td>20</td><td>13</td><td>9</td><td>35</td><td>2</td></tr>
+      <tr><td>Crossbowman</td><td>1</td><td>26</td><td>32</td><td>31</td><td>30</td><td>21</td><td>7</td><td>30</td><td>3</td></tr>
+      <tr><td>Axman</td><td>2</td><td>27</td><td>14</td><td>11</td><td>17</td><td>14</td><td>9</td><td>70</td><td>2</td></tr>
+      <tr><td>Stalwart</td><td>2</td><td>42</td><td>20</td><td>18</td><td>21</td><td>17</td><td>8</td><td>65</td><td>3</td></tr>
+      <tr><td>Packsman</td><td>3</td><td>32</td><td>15</td><td>15</td><td>10</td><td>23</td><td>15</td><td>95</td><td>3</td></tr>
+      <tr><td>Runerider</td><td>3</td><td>57</td><td>21</td><td>20</td><td>26</td><td>29</td><td>11</td><td>75</td><td>4</td></tr>
+    </tbody>
+  </table>
+  <h3>Orc Military Units</h3>
+    <table class="unitTable table-condensed">
+    <tbody>
+      <tr><th rowspan="2">Unit Name</th><th rowspan="2">Type</th><th rowspan="2">Attack</th><th colspan="4">Defense against</th><th rowspan="2">Speed</th><th rowspan="2">Carry</th><th rowspan="2">Feed</th></tr>
+      <tr><th>Spr</th><th>Rng</th><th>Inf</th><th>Cav</th></tr>
+      <tr><td>Scrawny Wolf</td><td>3</td><td>8</td><td>8</td><td>7</td><td>7</td><td>9</td><td>15</td><td>0</td><td>1</td></tr>
+      <tr><td>Kobold Cohort</td><td>0</td><td>9</td><td>12</td><td>6</td><td>12</td><td>13</td><td>8</td><td>25</td><td>1</td></tr>
+      <tr><td>Clan Guardsman</td><td>0</td><td>19</td><td>18</td><td>11</td><td>18</td><td>33</td><td>6</td><td>18</td><td>2</td></tr>
+      <tr><td>Clanguard</td><td>1</td><td>17</td><td>19</td><td>21</td><td>20</td><td>12</td><td>9</td><td>32</td><td>2</td></tr>
+      <tr><td>Death Dealer</td><td>1</td><td>26</td><td>31</td><td>30</td><td>30</td><td>20</td><td>7</td><td>27</td><td>3</td></tr>
+      <tr><td>Fang</td><td>2</td><td>22</td><td>14</td><td>11</td><td>15</td><td>14</td><td>7</td><td>40</td><td>2</td></tr>
+      <tr><td>Fist</td><td>2</td><td>36</td><td>18</td><td>17</td><td>18</td><td>19</td><td>5</td><td>60</td><td>3</td></tr>
+      <tr><td>Wolfrider</td><td>3</td><td>34</td><td>14</td><td>14</td><td>20</td><td>24</td><td>17</td><td>115</td><td>3</td></tr>
+      <tr><td>Death Pack</td><td>3</td><td>59</td><td>21</td><td>19</td><td>28</td><td>29</td><td>12</td><td>85</td><td>4</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Discoveries</h2>
+  <h3>Desert Flame</h3>
+    <p>All Mesa and Rocky Mountain Terrain locations in Kul Tar</p>
+    <table class = "table-condensed">
+      <tr><td><a href="#/World/Map/837/-302">#/World/Map/837/-302</a></td></tr>
+      <tr><td><a href="#/World/Map/964/-302">#/World/Map/964/-302</a></td></tr>
+      <tr><td><a href="#/World/Map/976/-303">#/World/Map/976/-303</a></td></tr>
+      <tr><td><a href="#/World/Map/968/-304">#/World/Map/968/-304</a></td></tr>
+      <tr><td><a href="#/World/Map/835/-306">#/World/Map/835/-306</a></td></tr>
+      <tr><td><a href="#/World/Map/972/-306">#/World/Map/972/-306</a></td></tr>
+      <tr><td><a href="#/World/Map/835/-307">#/World/Map/835/-307</a></td></tr>
+      <tr><td><a href="#/World/Map/836/-307">#/World/Map/836/-307</a></td></tr>
+      <tr><td><a href="#/World/Map/841/-308">#/World/Map/841/-308</a></td></tr>
+      <tr><td><a href="#/World/Map/934/-309">#/World/Map/934/-309</a></td></tr>
+      <tr><td><a href="#/World/Map/840/-310">#/World/Map/840/-310</a></td></tr>
+      <tr><td><a href="#/World/Map/844/-310">#/World/Map/844/-310</a></td></tr>
+      <tr><td><a href="#/World/Map/834/-311">#/World/Map/834/-311</a></td></tr>
+      <tr><td><a href="#/World/Map/845/-313">#/World/Map/845/-313</a></td></tr>
+      <tr><td><a href="#/World/Map/846/-313">#/World/Map/846/-313</a></td></tr>
+      <tr><td><a href="#/World/Map/850/-313">#/World/Map/850/-313</a></td></tr>
+      <tr><td><a href="#/World/Map/939/-313">#/World/Map/939/-313</a></td></tr>
+      <tr><td><a href="#/World/Map/945/-313">#/World/Map/945/-313</a></td></tr>
+      <tr><td><a href="#/World/Map/831/-315">#/World/Map/831/-315</a></td></tr>
+      <tr><td><a href="#/World/Map/852/-315">#/World/Map/852/-315</a></td></tr>
+      <tr><td><a href="#/World/Map/840/-316">#/World/Map/840/-316</a></td></tr>
+      <tr><td><a href="#/World/Map/844/-316">#/World/Map/844/-316</a></td></tr>
+      <tr><td><a href="#/World/Map/920/-316">#/World/Map/920/-316</a></td></tr>
+      <tr><td><a href="#/World/Map/924/-316">#/World/Map/924/-316</a></td></tr>
+      <tr><td><a href="#/World/Map/922/-317">#/World/Map/922/-317</a></td></tr>
+    </table>
+  <h3>Human Statues</h3>
+    <p>Send a spy (no matter which kind, but t2 are faster) to each one of the locations listed below. For each one you will discover the name of a famous spy and get a Scribe of Allembine, which provide a strong defense against spies.</p>
+    <p>Once you get all 20 locations you will be awarded a discovery (Allembine Research) which will give you up to 100 extra research points per hour (5 per library level)</p>
+    <p>Some of the locations will give you a clue which will require a follow up visit to a second location; they need to be done in that order or the Scribe of Allembine will not be awarded</p>
+    <p>A simple way to complete this discovery is to build 20 spies and send them to the listed first locations; after they all come back send to the second locations. You can feed your spies to Audrey after that.</p>
+    <table class="table-condensed">
+    <tbody><tr><th>#</th><th>Name</th><th>1st Location</th><th>2nd Location</th></tr>
+    <tr><td>1</td><td>Aldelbrecht</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-312/717" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>2</td><td>Asmorn</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-608/-189" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>3</td><td>Bjandar-Thegn</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/910/-507" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>4</td><td>Braynard</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-102/1" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/949/-379" target="_top">Send</a></td></tr>
+    <tr><td>5</td><td>Burkhardt</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/429/-931" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>6</td><td>Eberekt</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/516/505" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>7</td><td>Ferhonanth</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-485/-736" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/669/794" target="_top">Send</a></td></tr>
+    <tr><td>8</td><td>Fridholt</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/652/-265" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-843/-310" target="_top">Send</a></td></tr>
+    <tr><td>9</td><td>Gunthar</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-4/10" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>10</td><td>Haestin</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-377/-104" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>11</td><td>Keldar</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/356/498" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>12</td><td>Lambercht</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-157/-298" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>13</td><td>Lindricht</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/471/228" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-711/674" target="_top">Send</a></td></tr>
+    <tr><td>14</td><td>Oddric</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/232/345" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>15</td><td>Osgaut</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/761/-892" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-39/-973" target="_top">Send</a></td></tr>
+    <tr><td>16</td><td>Raedborth</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-194/-687" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>17</td><td>Regindalt</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/719/365" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>18</td><td>Rikert</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/22/-85" target="_top">Send</a></td><td>&nbsp;</td></tr>
+    <tr><td>19</td><td>Tormand</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-569/-91" target="_top">Send</a></td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/136/855" target="_top">Send</a></td></tr>
+    <tr><td>20</td><td>Ulvelaik</td><td><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/399/-431" target="_top">Send</a></td><td>&nbsp;</td></tr>
+  </tbody>
+  </table> 
+
+  <h3>Steamtastic Brewery</h3>
+    <p><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/-513/-96">Send</a> 125 T2 Spies to the Steamtastic Brewery to be awarded the Gnome Brew discovery</p>
+    <p>This allows you to use 20% less food to brew beer.</p>
+
+  <h3>Temple of Reason</h3>
+    <p>You will need you library to be at level 7 or below for this discovery to work.</p>
+    <p><a href="//elgea.illyriad.co.uk/#/Diplomatic/Orders/295/-165">Send</a> spies to the Temple of Reason and if you are lucky some of them will gain up to 50 research points.</p>
+
+</div>

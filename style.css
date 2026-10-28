@@ -1,0 +1,109 @@
+#ArmyDiv p {
+  margin-left: 10px;
+  margin-bottom: 2px;
+}
+#troopTable {
+  border: 1px;
+  margin-left: 10px;
+}
+
+#troopTable td {
+  padding-left: 2px;
+  padding-right: 2px;
+  vertical-align: middle;
+}
+#troopTable td a {
+  margin-left: 3px;
+}
+#troopTable td:nth-child(n+2) {
+  text-align: right;
+}
+#troopTable th:nth-child(n+2) {
+  width: 40px;
+  text-align: right;
+}
+#troopTable tr:nth-child(4n+2), #troopTable tr:nth-child(4n+3) {
+  background-color: #ccc;
+}
+#troopTable th {
+  font-weight: bold;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+#troopMovementTable {
+  border: 1px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+#troopMovementTable td {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+#troopMovementTable th {
+  font-weight: bold;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+#ctIKnow table {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+#ctIKnow table tbody tr:nth-child(2n) {
+  background-color: rgba(231,217,168,.5);
+}
+#ctIKnow table.unitTable tbody tr:nth-child(2n) {
+  background-color: transparent;
+}
+#ctIKnow table.unitTable tbody tr:nth-child(2n+3) {
+  background-color: rgba(231,217,168,.5);
+}
+#ctIKnow h2 {
+  margin-top: 10px;
+}
+
+#SovTable tbody tr td a { 
+  color: black;
+  font-weight: inherit;
+}
+
+#sovAccordion h3 {
+  padding-right: 35px;
+}
+
+#sovAccordion span.quickSov {
+  position:absolute;
+  width: 35px;
+  height: 32px;
+  right: 0px;
+  top: 0px;
+}
+
+#sovAccordion span.quickSov {
+  top: 4px;
+}
+#sovAccordion span.quickSov span {
+  display: inline-block;
+}
+#sovAccordion span.quickSov form {
+  display: inline-block;
+}
+
+#sovAccordion span.quickSov input[type="submit"] {
+  width: 16px;
+  height: 16px;
+  position: static;
+  display: inline-block;
+}
+#sovAccordion span.quickSov input.ico-custom {
+  background-position: -1px -22px;
+  background-image: url(//assets.illyriad.net/img/icons/base9.png);
+  background-repeat: no-repeat;
+  padding-top: 20px;
+  width: 24px;
+  height: 19px;
+}
+#sovAccordion span.quickSov input.ui-icon {
+  background-image: url(images/ui-icons_5b462f_256x240.png);
+}
