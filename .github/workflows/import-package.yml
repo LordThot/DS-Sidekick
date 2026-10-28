@@ -15,32 +15,61 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download package
+      - name: Download ZIP
         run: |
           curl -fL "https://raw.githubusercontent.com/LordThot/Info/main/ds_sidekick-1.1.1.zip" -o /tmp/ds.zip
 
-      - name: Extract package
+      - name: Extract ZIP
         run: |
           mkdir -p /tmp/ds
           unzip -oq /tmp/ds.zip -d /tmp/ds
-          echo "Files extracted:"
-          find /tmp/ds -type f | head -100
-          if ! find /tmp/ds -type f | grep -q .; then
-            echo "ERROR: ZIP contains no extracted files."
+          test -n "$(find /tmp/ds -type f -print -quit)"
+
+      - name: Create new repository files
+        run: |
+          python3 - <<'PY'
+          import os
+          import shutil
+
+          source = "/tmp/ds"
+          destination = os.getcwd()
+          count = 0
+
+          for root, dirs, files in os.walk(source):
+              dirs[:] = [d for d in dirs if d != ".git"]
+              for filename in files:
+                  src = os.path.join(root, filename)
+                  relative = os.path.relpath(src, source)
+                  dst = os.path.join(destination, relative)
+
+                  if os.path.commonpath([destination, dst]) != destination:
+                      raise RuntimeError("Unsafe file path: " + relative)
+
+                  os.makedirs(os.path.dirname(dst), exist_ok=True)
+                  shutil.copy2(src, dst)
+                  count += 1
+                  print("Created/updated:", relative)
+
+          print("Total files copied:", count)
+          if count == 0:
+              raise RuntimeError("No files were copied")
+          PY
+
+      - name: Stage and verify new files
+        run: |
+          git add -A
+          git status --short
+          git diff --cached --stat
+
+      - name: Commit changes
+        run: |
+          if git diff --cached --quiet; then
+            echo "ERROR: No changed files are staged."
             exit 1
           fi
-
-      - name: Copy files into repository
-        run: |
-          rsync -av /tmp/ds/ ./ --exclude='.git'
-          echo "Repository files:"
-          git status --short
-
-      - name: Commit and push files
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f .
-          git status --short
-          git commit --allow-empty -m "Import DS Sidekick package"
-          git push
+          git commit -m "Import DS Sidekick package"
+
+      - name: Push commit
+        run: git push
