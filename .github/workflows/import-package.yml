@@ -11,26 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Check out the repository and its full history
-      - name: Checkout repository
+      - name: Checkout latest repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+          clean: true
 
-      # 2. Synchronise BEFORE creating or staging imported files
-      - name: Synchronise with GitHub
+      - name: Verify clean checkout
         run: |
-          git fetch origin
-          git rebase "origin/${GITHUB_REF_NAME}"
+          git status --short
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "ERROR: Checkout is not clean."
+            exit 1
+          fi
 
-      # 3. Download the original ZIP
       - name: Download ZIP
         run: |
           curl -fL \
             "https://raw.githubusercontent.com/LordThot/Info/main/ds_sidekick-1.1.1.zip" \
             -o /tmp/ds.zip
 
-      # 4. Extract all nested folders and files
       - name: Extract ZIP
         run: |
           mkdir -p /tmp/ds
@@ -41,8 +42,7 @@ jobs:
             exit 1
           fi
 
-      # 5. Copy extracted files into the repository
-      - name: Create repository files
+      - name: Copy ZIP contents
         run: |
           python3 - <<'PY'
           import os
@@ -53,61 +53,53 @@ jobs:
           count = 0
 
           for root, dirs, files in os.walk(source):
-              dirs[:] = [
-                  d for d in dirs
-                  if d != ".git"
-              ]
+              dirs[:] = [d for d in dirs if d != ".git"]
 
               for filename in files:
                   src = os.path.join(root, filename)
                   relative = os.path.relpath(src, source)
-                  dst = os.path.join(destination, relative)
+                  dst = os.path.abspath(
+                      os.path.join(destination, relative)
+                  )
 
                   if os.path.commonpath(
-                      [destination, os.path.abspath(dst)]
+                      [destination, dst]
                   ) != destination:
                       raise RuntimeError(
-                          "Unsafe file path: " + relative
+                          "Unsafe path: " + relative
                       )
 
-                  os.makedirs(
-                      os.path.dirname(dst),
-                      exist_ok=True
-                  )
+                  os.makedirs(os.path.dirname(dst), exist_ok=True)
                   shutil.copy2(src, dst)
                   count += 1
-                  print("Copied:", relative)
+                  print("Imported:", relative)
 
-          print("Total files copied:", count)
+          print("Total files imported:", count)
 
           if count == 0:
-              raise RuntimeError("No files were copied.")
+              raise RuntimeError("No files imported.")
           PY
 
-      # 6. Configure the automated Git identity
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 7. Stage the imported files and show what will be committed
-      - name: Stage imported files
+      - name: Stage and inspect changes
         run: |
           git add -A
           git status --short
           git diff --cached --stat
 
-      # 8. Commit only when changes exist
-      - name: Commit imported files
+      - name: Commit changes
         run: |
           if git diff --cached --quiet; then
-            echo "No new changes to commit."
+            echo "No changes to commit; ZIP contents may already exist."
           else
             git commit -m "Import DS Sidekick package"
           fi
 
-      # 9. Push the commit to the workflow's branch
-      - name: Push commit
+      - name: Push changes
         run: |
           git push origin "HEAD:${GITHUB_REF_NAME}"
